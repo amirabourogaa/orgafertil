@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Orgafertil — Produits Biologiques Naturels</title>
+<title>Orgafertil — Produits organiques Naturels</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -886,31 +886,17 @@
 </head>
 <body>
 <!-- NAVBAR -->
+<!-- NAVBAR -->
 <nav id="navbar">
 
   <!-- LOGO -->
   <a href="#accueil" class="nav-logo-link">
     <div class="nav-logo">
-      <!-- Icône feuille SVG -->
-      <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 4 C20 4, 36 8, 36 22 C36 30 29 36 20 36 C20 36, 20 20, 8 14 C12 10, 16 4, 20 4Z"
-              fill="url(#leafGrad)" />
-        <path d="M20 36 C20 36, 20 22, 10 16" stroke="#81c784" stroke-width="1.2"
-              stroke-linecap="round" fill="none" opacity="0.7"/>
-        <path d="M20 28 C22 24, 28 20, 30 16" stroke="#81c784" stroke-width="0.9"
-              stroke-linecap="round" fill="none" opacity="0.5"/>
-        <path d="M20 22 C21 19, 25 17, 26 14" stroke="#81c784" stroke-width="0.8"
-              stroke-linecap="round" fill="none" opacity="0.4"/>
-        <defs>
-          <linearGradient id="leafGrad" x1="8" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#81c784"/>
-            <stop offset="100%" stop-color="#2d6a2d"/>
-          </linearGradient>
-        </defs>
-      </svg>
       <div class="logo-text">
-        <span class="logo-orga">Orga</span><span class="logo-fertil">fertil</span>
-        <span class="logo-tagline">Biologique · Naturel</span>
+        <div class="logo-main">
+          <span class="logo-orga">Orga</span><span class="logo-fertil">fertil</span>
+        </div>
+        <span class="logo-tagline">organique · Naturel</span>
       </div>
     </div>
   </a>
@@ -983,30 +969,17 @@
     gap: 0.8rem;
   }
 
-  .logo-icon {
-    width: 38px;
-    height: 38px;
-    flex-shrink: 0;
-    filter: drop-shadow(0 0 8px rgba(76,175,80,0.35));
-    transition: transform 0.4s ease, filter 0.4s ease;
-    animation: logoBreath 4s ease-in-out infinite;
-  }
-
-  @keyframes logoBreath {
-    0%,100% { filter: drop-shadow(0 0 8px rgba(76,175,80,0.35)); }
-    50%      { filter: drop-shadow(0 0 16px rgba(76,175,80,0.65)); }
-  }
-
-  .nav-logo-link:hover .logo-icon {
-    transform: rotate(-8deg) scale(1.1);
-    filter: drop-shadow(0 0 18px rgba(76,175,80,0.8));
-    animation: none;
-  }
-
   .logo-text {
     display: flex;
     flex-direction: column;
     line-height: 1;
+  }
+
+  .logo-main {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0;
   }
 
   .logo-orga {
@@ -1238,44 +1211,43 @@
 </style>
 
 <script>
-  // Toggle mobile menu
-  let menuOpen = false;
   function toggleMenu() {
-    menuOpen = !menuOpen;
-    const links    = document.getElementById('navLinks');
-    const burger   = document.getElementById('hamburger');
-    const overlay  = document.getElementById('navOverlay');
-    links.classList.toggle('mobile-open', menuOpen);
-    burger.classList.toggle('open', menuOpen);
-    overlay.classList.toggle('visible', menuOpen);
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    const navLinks = document.getElementById('navLinks');
+    const hamburger = document.getElementById('hamburger');
+    const overlay = document.getElementById('navOverlay');
+    
+    navLinks.classList.toggle('mobile-open');
+    hamburger.classList.toggle('open');
+    overlay.classList.toggle('visible');
+    
+    document.body.style.overflow = navLinks.classList.contains('mobile-open') ? 'hidden' : '';
   }
 
-  // Close on link click
-  document.querySelectorAll('.nav-item, .nav-cta-btn').forEach(a => {
-    a.addEventListener('click', () => {
-      if (menuOpen) toggleMenu();
-    });
-  });
-
-  // Scrolled class
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-  });
-
-  // Active link on scroll
-  const sections = document.querySelectorAll('section[id], div[id]');
-  const navItems = document.querySelectorAll('.nav-item');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navItems.forEach(a => {
-          a.classList.toggle('active-link', a.getAttribute('href') === '#' + entry.target.id);
-        });
+  // Close menu when clicking on a link
+  document.querySelectorAll('.nav-item, .nav-cta-btn').forEach(link => {
+    link.addEventListener('click', () => {
+      const navLinks = document.getElementById('navLinks');
+      const hamburger = document.getElementById('hamburger');
+      const overlay = document.getElementById('navOverlay');
+      
+      if (navLinks.classList.contains('mobile-open')) {
+        navLinks.classList.remove('mobile-open');
+        hamburger.classList.remove('open');
+        overlay.classList.remove('visible');
+        document.body.style.overflow = '';
       }
     });
-  }, { threshold: 0.4 });
-  sections.forEach(s => io.observe(s));
+  });
+
+  // Scroll effect
+  window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
 </script>
 
 <!-- HERO -->
@@ -1284,9 +1256,9 @@
   <div class="hero-lines"></div>
 
   <div class="hero-left">
-    <div class="hero-badge">🌱 100% Biologique & Naturel</div>
+    <div class="hero-badge">🌱 100% organique & Naturel</div>
     <h1>La Nature,<br><em>Notre Expertise</em>,<br>Votre Rendement.</h1>
-    <p class="hero-desc">Orgafertil développe des produits biologiques issus de la transformation organique naturelle — pour des plantes plus saines, un sol vivant, et un avenir préservé.</p>
+    <p class="hero-desc">Orgafertil développe des produits organiques issus de la transformation organique naturelle — pour des plantes plus saines, un sol vivant, et un avenir préservé.</p>
     <div class="hero-btns">
       <a href="#produits" class="btn-primary">Découvrir nos produits</a>
       <a href="#about" class="btn-outline">En savoir plus</a>
@@ -1297,7 +1269,7 @@
     <div class="hero-img-frame">
       <div class="hero-img-border"></div>
       <div class="hero-img-wrap">
-        <img src="assets/logo.png" alt="Orgafertil — Produits biologiques naturels"
+        <img src="assets/logo.png" alt="Orgafertil — Produits organiques naturels"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
         <div class="hero-img-fallback">🌿</div>
       </div>
@@ -1306,7 +1278,7 @@
         100% Origine Naturelle
       </div>
       <div class="hero-img-stat">
-        <strong>+500</strong>
+        <strong>+3000</strong>
         <span>Clients satisfaits</span>
       </div>
     </div>
@@ -1496,18 +1468,18 @@
 <div class="stats-bar reveal">
   <div class="stat-item">
     <span class="stat-number" data-target="100">0</span>
-    <span class="stat-label">% Naturel & Bio</span>
+    <span class="stat-label">% Naturel</span>
   </div>
   <div class="stat-item">
     <span class="stat-number" data-target="0">0</span>
     <span class="stat-label">Produits Chimiques</span>
   </div>
   <div class="stat-item">
-    <span class="stat-number" data-target="15">0</span>
+    <span class="stat-number" data-target="7">0</span>
     <span class="stat-label">Ans d'Expertise</span>
   </div>
   <div class="stat-item">
-    <span class="stat-number" data-target="500">0</span>
+    <span class="stat-number" data-target="3000">0</span>
     <span class="stat-label">Clients Satisfaits</span>
   </div>
 </div>
@@ -1555,7 +1527,7 @@
 <section id="produits" class="products-section">
   <div class="products-header reveal">
     <span class="section-tag">Notre Gamme</span>
-    <h2>Produits Biologiques<br>Haute Performance</h2>
+    <h2>Produits organiques<br>Haute Performance</h2>
   </div>
 
   <div class="products-duo-grid">
@@ -1588,7 +1560,6 @@
         <p class="pdc-desc">Extrait de compost fermenté agissant comme biostimulant naturel pour induire l'enracinement et augmenter la masse racinaire. À dose supérieure, il stimule la floraison et donne un potentiel productif très important.</p>
         <div class="pdc-badges">
           <span class="badge">🌿 Enracinement</span>
-          <span class="badge">🛡️ Anti-Fusarium</span>
           <span class="badge">🌸 Floraison+</span>
           <span class="badge">🔬 PGPR</span>
         </div>
@@ -1601,7 +1572,7 @@
               <ul>
                 <li>Extrait de compost fermenté — biostimulant naturel</li>
                 <li>Induit l'enracinement et augmente la masse racinaire</li>
-                <li>PGPR — protège contre les maladies racinaires (<em>Fusarium sp.</em>)</li>
+                <li>PGPR — protège contre les maladies racinaires </li>
                 <li>À dose supérieure : stimule la floraison et le potentiel productif</li>
               </ul>
             </div>
@@ -2096,7 +2067,7 @@
   <div class="philosophy-top-grid">
     <div class="philosophy-content reveal">
       <span class="section-tag">Notre Philosophie</span>
-      <p class="big-quote">"Pourquoi utiliser des produits chimiques <strong>néfastes à la plante, à l'environnement</strong> et par récurrence à l'homme, alors que nous pouvons utiliser des produits <strong>biologiques, naturels et sains à 100%</strong> ?"</p>
+      <p class="big-quote">"Pourquoi utiliser des produits chimiques <strong>néfastes à la plante, à l'environnement</strong> et par récurrence à l'homme, alors que nous pouvons utiliser des produits <strong>organiques, naturels et sains à 100%</strong> ?"</p>
       <div class="divider" style="margin:1.5rem 0;"></div>
       <p style="color:rgba(244,241,235,0.6); font-size:0.9rem; line-height:1.8; font-weight:300;">Cette question est au cœur de tout ce que nous faisons chez Orgafertil. Elle guide nos recherches, inspire nos formulations et définit notre engagement envers vous.</p>
     </div>
@@ -2133,14 +2104,14 @@
   <div class="cta-with-image">
 
     <div class="cta-img-wrap">
-      <img src="assets/cta.jpeg" alt="Agriculture biologique"
+      <img src="assets/cta.jpeg" alt="Agriculture organique"
            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
       <div class="img-fallback">🌾</div>
       <div class="cta-img-overlay"></div>
     </div>
 
     <div class="cta-inner reveal">
-      <span class="section-tag" style="display:block; padding-left:0;">Prêt à Passer au Bio ?</span>
+      <span class="section-tag" style="display:block; padding-left:0;">Prêt à Passer à l'organique ?</span>
       <h2>Commencez Votre Transition<br>Vers le Naturel</h2>
       <p>Que vous soyez agriculteur, paysagiste ou jardinier amateur, Orgafertil a la solution adaptée à vos besoins. Contactez notre équipe d'experts dès aujourd'hui.</p>
       <div class="cta-btns">
@@ -2375,7 +2346,7 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <span class="logo">Orga<span>fertil</span></span>
-      <p>Spécialiste en produits biologiques et naturels pour le sol et la plante. Parce que la nature a tout ce dont vous avez besoin.</p>
+      <p>Spécialiste en produits organiques et naturels pour le sol et la plante. Parce que la nature a tout ce dont vous avez besoin.</p>
     </div>
 
     <div class="footer-col">
@@ -2394,8 +2365,6 @@
       <ul>
         <li><a href="#">Amendements</a></li>
         <li><a href="#">Biostimulants</a></li>
-        <li><a href="#">Foliaires Bio</a></li>
-        <li><a href="#">Inoculants</a></li>
         <li><a href="#">Gamme Jardin</a></li>
       </ul>
     </div>
@@ -2413,7 +2382,7 @@
   </div>
 
   <div class="footer-bottom">
-    <p>© 2024 <span>Orgafertil</span>. Tous droits réservés.</p>
+    <p>© 2026 <span>Orgafertil</span>. Tous droits réservés.</p>
     <p>Conçu avec <span>🌿</span> pour une agriculture durable</p>
   </div>
 </footer>
